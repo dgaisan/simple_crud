@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var auth = require('http-auth');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -23,6 +24,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var basic = auth.basic({
+        realm: "Slidermaker Area."
+    }, function (username, password, callback) {
+        callback(username === "slidermaker" && password === "Jitajita");
+    }
+);
+app.use(auth.connect(basic));
 
 app.use('/', routes);
 app.use('/users', users);

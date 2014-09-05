@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 var debug = require('debug')('myapp');
 var app = require('../app');
-var $port = 80; //process.env.NODE_ENV === 'production' ? 80 : 3000;
 
-console.log('process.env.NODE_ENV = ' + process.env.NODE_ENV);
+var $port = 80;
+
+//var $port process.env.NODE_ENV === 'production' ? 80 : 3000// ;
+//console.log('process.env.NODE_ENV = ' + process.env.NODE_ENV);
+
 app.set('port', $port);
 
 var server = app.listen(app.get('port'), function() {
