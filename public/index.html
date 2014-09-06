@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index file</title>
+    <link rel="stylesheet" href="stylesheets/bootstrap.css"/>
+    <script src="javascripts/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            init();
+        });
+
+        function init() {
+            console.log('init function');
+            $('#licenseForm').submit( function(event) {
+                event.preventDefault();
+
+                var $form = $(this);
+                var d = $('#domain').val();
+                var l = $('#license').val();
+                var url = $form.attr('action');
+                $.post(url, {'domain': d, 'license': l})
+                        .done(function(data) {
+                            console.log(data); // TODO remove me
+                            if (data.activated === true) {
+                                $form.hide();
+                                $('#result_failure').html('');
+                                $('#result').html('<p>Congratulations! You can start using your plugin now!<p>');
+                            } else {
+                                $('#result_failure').html('<p>Unfortunately you entered incorrect license key...<p>');
+                            }
+                        })
+                        .fail(function() {
+                            console.log('failed');
+                            $('#result_failure').html('<p>Something went wrong, please try again.<p>');
+                        });
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </div>
+
+    <div class="container-fluid">
+        <div class="col-md-6 center-block">
+            <form action="/activate" id="licenseForm">
+                <div class="form-group">
+                    <label for="domain">Domain Name</label>
+                    <input type="text" id="domain" name="domain" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label for="license">License Key</label>
+                    <input type="text" id="license" name="license" class="form-control"/>
+                </div>
+                <button type="submit">Activate My Plugin!</button>
+            </form>
+            <div id="result" class="text-success"></div>
+            <div id="result_failure" class="text-warning"></div>
+        </div>
+    </div>
+</body>
+</html>

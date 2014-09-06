@@ -6,8 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var auth = require('http-auth');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var activateRoute = require('./routes/activate');
 
 var app = express();
 
@@ -32,8 +31,8 @@ var basic = auth.basic({
 );
 app.use(auth.connect(basic));
 
-app.use('/', routes);
-app.use('/users', users);
+
+app.use('/activate', activateRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
